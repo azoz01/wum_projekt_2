@@ -9,7 +9,7 @@ link_to_data
 ## Conventions:
 - Use black formatter - `%load_ext lab_black` at the beginning of notebook and vscode plugin for `.py` files.
 - All pipelines in separate files
-- notebooks with clear outputs
+- upload `.ipynb` notebooks with clear outputs, notebooks with outputs only in `.pdf` 
 - no `.csv` files
        
 
@@ -33,5 +33,5 @@ link_to_data
 ## Usage
  To create proper environment use
  ```
- pip install -r requirements.py
+ pip install -r requirements.txt
  ```
