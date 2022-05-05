@@ -36,7 +36,10 @@ def flatten_group(group):
     bow_vector = csr_array(bow_vector)
     return bow_vector
 
-def convert_raw_data_to_bow_vectors(docword_path, dataset_name, vocab_mapping_path, output_path):
+
+def convert_raw_data_to_bow_vectors(
+    docword_path, dataset_name, vocab_mapping_path, output_path
+):
     df = (
         spark.read.format("csv")
         .option("delimiter", True)
@@ -53,8 +56,8 @@ def convert_raw_data_to_bow_vectors(docword_path, dataset_name, vocab_mapping_pa
     # NOTE: Partition big csv into csvs with 10000 docs each
     n = df.select("doc_id").distinct().count() // 10000
     df = df.withColumn("part_col", col("doc_id") % n)
-    
-    # Write partitioned csvs into temporary directory 
+
+    # Write partitioned csvs into temporary directory
     temp_path = "temp"
     df.write.format("csv").partitionBy("part_col").save(temp_path)
 
@@ -64,19 +67,19 @@ def convert_raw_data_to_bow_vectors(docword_path, dataset_name, vocab_mapping_pa
         vocab_mapping = pkl.load(f)
 
     for d in tqdm(os.listdir(temp_path)):
-        
+
         if not d.startswith("part_col="):
             continue
         path = os.path.join(temp_path, d)
         csv_path = list(filter(lambda dir: dir.endswith(".csv"), os.listdir(path)))[0]
-        
+
         temp_df = pd.read_csv(
             os.path.join(path, csv_path),
             header=None,
         )
         temp_df.columns = ["doc_id", "word_id", "count"]
-        temp_df['word_id'] = temp_df["word_id"].map(vocab_mapping)
-        
+        temp_df["word_id"] = temp_df["word_id"].map(vocab_mapping)
+
         temp_df = (
             temp_df.groupby("doc_id", as_index=False)
             .apply(flatten_group)
@@ -87,12 +90,17 @@ def convert_raw_data_to_bow_vectors(docword_path, dataset_name, vocab_mapping_pa
         out_df = pd.concat([out_df, temp_df]).reset_index(drop=True)
         # temp_df is needed no more so can be removed from memory
         del [temp_df]
-    out_df.label = dataset_name
+    out_df["label"] = dataset_name
     out_df.to_pickle(output_path)
     # Clean after processing
     shutil.rmtree(temp_path)
 
+
 if __name__ == "__main__":
-    for name, docword_path, vocab_mapping_path, output_path in zip(dataset_names, docword_paths, vocab_mapping_paths, converted_docwords_paths):
+    for name, docword_path, vocab_mapping_path, output_path in zip(
+        dataset_names, docword_paths, vocab_mapping_paths, converted_docwords_paths
+    ):
         print(f"Processing {name}")
-        convert_raw_data_to_bow_vectors(docword_path, name, vocab_mapping_path, output_path)
+        convert_raw_data_to_bow_vectors(
+            docword_path, name, vocab_mapping_path, output_path
+        )

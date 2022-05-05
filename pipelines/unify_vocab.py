@@ -17,6 +17,7 @@ def update_docword(df: pd.DataFrame, mapping: dict):
     df["vocab_index"] = df[df.columns[1]].map(mapping)
     return df
 
+
 def unify_vocab(
     vocab_paths,
     names,
