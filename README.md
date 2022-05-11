@@ -4,7 +4,7 @@ Second project for machine learning classes.
 ## Links
 ### Data:
 ```
-link_to_data
+https://archive.ics.uci.edu/ml/machine-learning-databases/bag-of-words/
 ```
 ## Conventions:
 - Use black formatter - `%load_ext lab_black` at the beginning of notebook and vscode plugin for `.py` files.
