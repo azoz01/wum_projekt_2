@@ -59,7 +59,9 @@ class TfidfFromDictionariesVectorizer(TransformerMixin):
         )
         transformed = self.tfidf.transform(texts)
         transformed = self.svd.transform(transformed)
-        transformed = pd.Series(data=[transformed[i] for i in range(transformed.shape[0])])
+        transformed = pd.Series(
+            data=[transformed[i] for i in range(transformed.shape[0])]
+        )
         return transformed
 
 
@@ -104,11 +106,9 @@ class WordEmbeddingDocVectorizer(TransformerMixin):
         if len(scaled_vectors) == 0:
             return self._get_zero_vector_of_embedding(self.wv)
 
-        vectors = (
-            np.stack(
-                scaled_vectors,
-                axis=0,
-            )
+        vectors = np.stack(
+            scaled_vectors,
+            axis=0,
         )
         words_count = np.sum(list(bow_dict.values()))
         return vectors.sum(axis=0) / words_count
