@@ -4,4 +4,4 @@
 /resources/data/*.txt
 /resources/data/*.gz
 /resources/data/*.pkl
-*.pkl
+/notebooks/resources/*.pkl
