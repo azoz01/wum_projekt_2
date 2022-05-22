@@ -9,7 +9,7 @@ consoleHandler.setFormatter(logFormatter)
 logger.addHandler(consoleHandler)
 
 # Variables used during pipelines
-sample_size = 10000
+sample_size = 1500
 test_size = 0.3
 doc_freq_min_threshold = 2
 

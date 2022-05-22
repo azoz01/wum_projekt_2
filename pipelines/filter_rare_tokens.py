@@ -6,6 +6,10 @@ from funcy import select_keys
 from pipelines_config import *
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from nltk.corpus import stopwords
+
+trashwords = {"november"}
+
 
 def dict_to_string(bow_dict: dict) -> str:
     """Converts bow dictionary to string, where each word occurs
@@ -32,6 +36,23 @@ def filter_too_rare(bow_dict: dict, too_rare_tokens: np.ndarray) -> dict:
         dict
     """
     return select_keys(lambda key: key not in too_rare_tokens, bow_dict)
+
+
+def words_to_del() -> set:
+    stopwords_set = set(stopwords.words("english"))
+    stopwords_set.update(trashwords)
+    return stopwords_set
+
+
+def update_links(bow_dict: dict) -> dict:
+    for key in bow_dict.keys():
+        if str(key).startswith("zzz_"):
+            if key[4:] in bow_dict:
+                bow_dict[key[4:]] += bow_dict[key]
+            else:
+                bow_dict[key[4:]] = bow_dict[key]
+            bow_dict.pop(key)
+    return bow_dict
 
 
 def main():
@@ -69,6 +90,18 @@ def main():
     df_test["bow_dict"] = df_test["bow_dict"].swifter.apply(
         filter_too_rare, too_rare_tokens=too_rare_tokens
     )
+
+    logger.info("Started removing stopwords")
+    df_train["bow_dict"] = df_train["bow_dict"].swifter.apply(
+        filter_too_rare, too_rare_tokens=words_to_del()
+    )
+    df_test["bow_dict"] = df_test["bow_dict"].swifter.apply(
+        filter_too_rare, too_rare_tokens=words_to_del()
+    )
+
+    logger.info("Started updating links")
+    df_train["bow_dict"] = update_links(df_train["bow_dict"])
+    df_test["bow_dict"] = update_links(df_test["bow_dict"])
 
     logger.info(
         f"Started saving train and test data to {train_data_path, test_data_path}"
