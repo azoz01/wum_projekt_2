@@ -5,3 +5,5 @@
 /resources/data/*.gz
 /resources/data/*.pkl
 /notebooks/resources/*.pkl
+/resources/*
+*.png

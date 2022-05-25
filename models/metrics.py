@@ -92,22 +92,4 @@ def _get_vectors_given_label(
     return X[labels == label, :]
 
 
-# Metrics. All are callable with argument X - matrix where each row corresponds
-# to entry and labels - cluster assigned to entries from X
-metrics_labels = [
-    "WCSS",
-    "Silhouette",
-    "Min intercluster dist.",
-    "Mean intercluster dist.",
-]
-metrics = [wcss, silhouette_score, min_interclust_dist, mean_inclust_dist]
-logger.info("Loaded metrics: " + str([metric.__name__ for metric in metrics]))
-
-# Testing code if metrics work
-# from sklearn.datasets import load_iris
-# dataset = load_iris()['data']
-# from sklearn.cluster import KMeans
-# model = KMeans(n_clusters=2)
-# model.fit(dataset)
-# for metric in metrics:
-#     print(metric(dataset, model.predict(dataset)))
+metrics_list = [wcss, silhouette_score, min_interclust_dist, mean_inclust_dist]
