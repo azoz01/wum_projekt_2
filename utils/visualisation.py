@@ -67,6 +67,30 @@ def get_metrics_of_model(
     return pd.pivot(output_df, index=["metric"], columns=["sample"])
 
 
+def plot_clustering_from_clusters(
+    X_train: np.ndarray,
+    X_test: np.ndarray,
+    train_clusters: np.ndarray,
+    test_clusters: np.ndarray,
+):
+    """
+    Given vector and clusters plots them on 2D plane.
+    Args:
+        X_train (np.ndarray)
+        X_test (np.ndarray)
+        train_clusters (np.ndarray)
+        test_clusters (np.ndarray)
+    """
+    X_train, X_test = _project_to_plane(X_train, X_test)
+    fig, axs = plt.subplots(ncols=2)
+    axs[0].set_title("Train sample")
+    axs[1].set_title("Test sample")
+    sns.scatterplot(x=X_train[:, 0], y=X_train[:, 1], hue=train_clusters, ax=axs[0], legend="full")
+    axs[0].legend(loc="lower right")
+    sns.scatterplot(x=X_test[:, 0], y=X_test[:, 1], hue=test_clusters, ax=axs[1], legend="full")
+    axs[1].legend(loc="lower right")
+
+    
 def plot_clustering(
     model: BaseEstimator,
     X_train: np.ndarray,
@@ -86,8 +110,8 @@ def plot_clustering(
     fig, axs = plt.subplots(ncols=2)
     axs[0].set_title("Train sample")
     axs[1].set_title("Test sample")
-    sns.scatterplot(x=X_train[:, 0], y=X_train[:, 1], c=train_clusters, ax=axs[0])
-    sns.scatterplot(x=X_test[:, 0], y=X_test[:, 1], c=test_clusters, ax=axs[1])
+    sns.scatterplot(x=X_train[:, 0], y=X_train[:, 1], hue=train_clusters, ax=axs[0])
+    sns.scatterplot(x=X_test[:, 0], y=X_test[:, 1], hue=test_clusters, ax=axs[1])
 
 
 def _get_clusters(

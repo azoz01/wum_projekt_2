@@ -34,7 +34,6 @@ docword_dicts_paths = [
     os.path.join(root_data_path, f"docword.dict.{name}.pkl") for name in dataset_names
 ]
 
-<<<<<<< HEAD
 concatenated_data_path = os.path.join(root_data_path, "concatenated.pkl")
 train_data_path = os.path.join(root_data_path, "train_data.pkl")
 test_data_path = os.path.join(root_data_path, "test_data.pkl")
@@ -53,7 +52,3 @@ test_dim_red_data_path = os.path.join(root_data_path, "test_data_reduced.pkl")
 
 train_data_enriched_path = os.path.join(root_data_path, "train_data_enriched.pkl")
 test_data_enriched_path = os.path.join(root_data_path, "test_data_enriched.pkl")
-=======
-train_data_path = os.path.join(root_data_path, "train_data.pkl")
-test_data_path = os.path.join(root_data_path, "test_data.pkl")
->>>>>>> origin/main

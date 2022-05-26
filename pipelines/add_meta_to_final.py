@@ -24,6 +24,11 @@ def main():
     X_train = np.concatenate([X_train, train_meta.values], axis=1)
     X_test = np.concatenate([X_test, test_meta.values], axis=1)
 
+    logger.info("Started standardizing final data")
+    X_test = (X_test - X_train.mean(axis=0)) / (X_train.std(axis=0))
+    X_train = (X_train - X_train.mean(axis=0)) / (X_train.std(axis=0))
+
+
     logger.info(f"Started saving train data to {train_data_enriched_path}")
     with open(train_data_enriched_path, "wb") as f:
         pkl.dump(X_train, f)
