@@ -42,7 +42,7 @@ train_data_meta_path = os.path.join(root_data_path, "train_data_meta.pkl")
 test_data_meta_path = os.path.join(root_data_path, "test_data_meta.pkl")
 
 lda_topics_num = 4
-final_dimensions_count = 3000
+final_dimensions_count = 100
 
 train_data_tfidf_path = os.path.join(root_data_path, "train_data_tfidf.pkl")
 test_data_tfidf_path = os.path.join(root_data_path, "test_data_tfidf.pkl")
