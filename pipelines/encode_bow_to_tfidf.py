@@ -23,6 +23,9 @@ def main():
     logger.info("Started fitting TF-IDF")
     tfidf.fit(train_data)
 
+    logger.info("Started persisting fitted TF-IDF")
+    with open("resources/data/tfidf.pkl", "wb") as f:
+        pkl.dump(tfidf, f)
     logger.info("Started tranfrorming train data")
     train_data = tfidf.transform(train_data)
     logger.info("Started tranfrorming test data")
